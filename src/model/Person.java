@@ -11,12 +11,9 @@ public class Person {
     protected String gender;
     protected String country;
     protected String photo;
-    protected Date birthday;
+    protected String birthday;
 
-
-    public Person() {
-    }
-    public Person(String id, String firstName, String lastName, String email, String gender, String country, String photo, Date birthday) {
+    public Person(String id, String firstName, String lastName, String email, String gender, String country, String photo, String birthday) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -84,11 +81,11 @@ public class Person {
         this.photo = photo;
     }
 
-    public Date getBirthday() {
+    public String getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(Date birthday) {
+    public void setBirthday(String birthday) {
         this.birthday = birthday;
     }
 }

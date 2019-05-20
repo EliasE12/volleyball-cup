@@ -6,10 +6,11 @@
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/resourses" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/test" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/resourses/testData" type="java-test-resource" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="JUnit5.3" level="application" />
-    <orderEntry type="library" name="jfoenix-8.0.8" level="project" />
+    <orderEntry type="library" exported="" name="JUnit5.3" level="project" />
+    <orderEntry type="library" exported="" name="jfoenix-8.0.8" level="project" />
   </component>
 </module>

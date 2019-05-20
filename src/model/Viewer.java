@@ -1,19 +1,40 @@
 package model;
 
+import customExceptions.NotExistViewerException;
+
 import java.util.Date;
+import java.util.List;
 
 public class Viewer extends Person implements Comparable<Viewer>{
 
     private Viewer leftViewer;
-    private Viewer righttViewer;
+    private Viewer rightViewer;
 
-
-    public Viewer(String id, String firstName, String lastName, String email, String gender, String country, String photo, Date birthday) {
+    public Viewer(String id, String firstName, String lastName, String email, String gender, String country, String photo, String birthday) {
         super(id, firstName, lastName, email, gender, country, photo, birthday);
         leftViewer = null;
-        righttViewer = null;
+        rightViewer = null;
     }
 
+
+    public void preOrder(List<Viewer> list){
+        list.add(this);
+        if (leftViewer != null)
+            leftViewer.preOrder(list);
+        if (rightViewer != null)
+            rightViewer.preOrder(list);
+    }
+
+
+    public void inOrder(List<Viewer> list){
+        if (leftViewer != null){
+            leftViewer.inOrder(list);
+        }
+        list.add(this);
+        if (rightViewer != null){
+            rightViewer.inOrder(list);
+        }
+    }
 
 
 
@@ -25,29 +46,15 @@ public class Viewer extends Person implements Comparable<Viewer>{
         this.leftViewer = leftViewer;
     }
 
-    public Viewer getRighttViewer() {
-        return righttViewer;
+    public Viewer getRightViewer() {
+        return rightViewer;
     }
 
-    public void setRighttViewer(Viewer righttViewer) {
-        this.righttViewer = righttViewer;
+
+    public void setRightViewer(Viewer rightViewer) {
+        this.rightViewer = rightViewer;
     }
 
-    @Override
-    public String toString() {
-        return "Viewer{" +
-                       ", id='" + id + '\'' +
-                       ", firstName='" + firstName + '\'' +
-                       ", lastName='" + lastName + '\'' +
-                       ", email='" + email + '\'' +
-                       ", gender='" + gender + '\'' +
-                       ", country='" + country + '\'' +
-                       ", photo='" + photo + '\'' +
-                       ", birthday=" + birthday +
-                       "leftViewer=" + leftViewer +
-                       ", righttViewer=" + righttViewer +
-                       '}';
-    }
 
     @Override
     public int compareTo(Viewer viewer) {

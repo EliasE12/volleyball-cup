@@ -4,50 +4,34 @@ import java.util.Date;
 
 public class Competitor extends Person implements Comparable<Competitor> {
 
-    private Competitor firstCompetitor;
-    private Competitor lastCompetitor;
+    private Competitor nextCompetitor;
+    private Competitor previousCompetitor;
 
-
-    public Competitor(String id, String firstName, String lastName, String email, String gender, String country, String photo, Date birthday) {
+    public Competitor(String id, String firstName, String lastName, String email, String gender, String country, String photo, String birthday) {
         super(id, firstName, lastName, email, gender, country, photo, birthday);
-        firstCompetitor = null;
-        lastCompetitor = null;
+        nextCompetitor = null;
+        previousCompetitor = null;
+    }
+
+
+    public Competitor getNextCompetitor() {
+        return nextCompetitor;
+    }
+
+    public void setNextCompetitor(Competitor nextCompetitor) {
+        this.nextCompetitor = nextCompetitor;
+    }
+
+    public Competitor getPreviousCompetitor() {
+        return previousCompetitor;
+    }
+
+    public void setPreviousCompetitor(Competitor previousCompetitor) {
+        this.previousCompetitor = previousCompetitor;
     }
 
 
 
-
-    public Competitor getFirstCompetitor() {
-        return firstCompetitor;
-    }
-
-    public void setFirstCompetitor(Competitor firstCompetitor) {
-        this.firstCompetitor = firstCompetitor;
-    }
-
-    public Competitor getLastCompetitor() {
-        return lastCompetitor;
-    }
-
-    public void setLastCompetitor(Competitor lastCompetitor) {
-        this.lastCompetitor = lastCompetitor;
-    }
-
-    @Override
-    public String toString() {
-        return "Competitor{" +
-                       ", id='" + id + '\'' +
-                       ", firstName='" + firstName + '\'' +
-                       ", lastName='" + lastName + '\'' +
-                       ", email='" + email + '\'' +
-                       ", gender='" + gender + '\'' +
-                       ", country='" + country + '\'' +
-                       ", photo='" + photo + '\'' +
-                       ", birthday=" + birthday +
-                       "firstCompetitor=" + firstCompetitor +
-                       ", lastCompetitor=" + lastCompetitor +
-                       '}';
-    }
 
     @Override
     public int compareTo(Competitor competitor) {
