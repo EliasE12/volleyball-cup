@@ -1,5 +1,8 @@
 package testModel;
 
+import customExceptions.EmptyIdException;
+import customExceptions.NotExistCompetitorException;
+import customExceptions.NotExistViewerException;
 import model.Competitor;
 import model.Cup;
 import model.Viewer;
@@ -26,9 +29,9 @@ class CupTest {
     private void setupScenary3(){
         cup = new Cup();
         cup.setFirstCompetitor(new Competitor("06-4197009","Lewes","Rudledge","lrudledgeg6@hud.gov","Male","Indonesia","https://robohash.org/inoccaecatiquis.jpg?size=170x170&set=set1","8/20/1984"));
-
-
     }
+
+
 
     @Test
     void testLoadInfo() {
@@ -37,124 +40,114 @@ class CupTest {
 
         try{
             cup.loadInfo(new File("Little_Data.csv"));
-
         }catch (IOException e){
+        }
+    }
 
+
+    @Test
+    void testIsEmptyTree() {
+        setupScenary1();
+
+        assertNull(cup.getRootViewer(),"El árbol no está vacía.");
+    }
+
+    @Test
+    void testAddViewer() {
+        setupScenary1();
+
+        String id = "82-1455378";
+        String fn = "Ceil";
+        String ln = "Densie";
+        String e = "cdensieht@umn.edu";
+        String g = "Female";
+        String c = "China";
+        String pP = "https://robohash.org/quiarepellatquas.bmp?size=170x170&set=set1";
+        String b = "4/24/1989";
+
+        cup.addViewer(id,fn,ln,e,g,c,pP,b);
+
+        assertNotNull(cup.getRootViewer().getId(), "El spectador no se ha agregado");
+    }
+
+    @Test
+    void testSearchViewer() {
+        setupScenary2();
+
+        try {
+            assertNotNull(cup.searchViewer("81-1032628"), "El espectador buscado no existe.");
+        } catch (EmptyIdException e) {
+            e.printStackTrace();
+        } catch (NotExistViewerException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    void testAddCompetitor() {
+        setupScenary1();
+
+        String id = "99-1451378";
+        String fn = "Centel";
+        String ln = "Colrnell";
+        String e = "cennell@umn.mi";
+        String g = "Male";
+        String c = "Australia";
+        String pP = "https://robohash.org/euidquerree.bmp?size=170x170&set=set1";
+        String b = "8/05/1994";
+
+        cup.addCompetitor(id,fn,ln,e,g,c,pP,b);
+
+        assertNotNull(cup.getFirstCompetitor(), "El participante no se ha agregado.");
+    }
+
+    @Test
+    void testInOrder() {
+
+    }
+
+    @Test
+    void testIsEmptyList() {
+
+    }
+
+    @Test
+    void testSearchCompetitor() {
+        setupScenary3();
+
+        try {
+           assertNotNull(cup.searchCompetitor("06-4197009"), "El participante buscado no existe.");
+        } catch (EmptyIdException e) {
+            e.printStackTrace();
+        } catch (NotExistCompetitorException e) {
+            e.printStackTrace();
         }
 
     }
 
-
     @Test
-    void isEmptyTree() {
-        setupScenary1();
-
-
+    void testSelectCompetitors() {
     }
 
     @Test
-    void addViewer() {
+    void testEmptyList() {
     }
 
     @Test
-    void searchViewer() {
-        setupScenary2();
-
-
+    void testViewersToPrint() {
     }
 
     @Test
-    void addCompetitor() {
+    void testTreeViewersToPrint() {
     }
 
     @Test
-    void preOrder() {
+    void testCompetitorsToPrint() {
     }
 
     @Test
-    void inOrder() {
+    void testEmptyTree() {
     }
 
-    @Test
-    void isEmptyList() {
-    }
 
-    @Test
-    void searchCompetitor() {
-        setupScenary3();
-
-
-    }
-
-    @Test
-    void selectCompetitors() {
-    }
-
-    @Test
-    void emptyList() {
-    }
-
-    @Test
-    void viewersToPrint() {
-    }
-
-    @Test
-    void treeViewersToPrint() {
-    }
-
-    @Test
-    void competitorsToPrint() {
-    }
-
-    @Test
-    void emptyTree() {
-    }
-
-    @Test
-    void getNumberViewers() {
-    }
-
-    @Test
-    void setNumberViewers() {
-    }
-
-    @Test
-    void getNumberCompetitor() {
-    }
-
-    @Test
-    void setNumberCompetitor() {
-    }
-
-    @Test
-    void getRootViewer() {
-    }
-
-    @Test
-    void setRootViewer() {
-    }
-
-    @Test
-    void getFirstCompetitor() {
-    }
-
-    @Test
-    void setFirstCompetitor() {
-    }
-
-    @Test
-    void getTime() {
-    }
-
-    @Test
-    void setTime() {
-    }
-
-    @Test
-    void getLastCompetitor() {
-    }
-
-    @Test
-    void setLastCompetitor() {
-    }
 }

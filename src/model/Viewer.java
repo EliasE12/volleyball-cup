@@ -22,15 +22,6 @@ public class Viewer extends Person implements Comparable<Viewer>{
     // Métodos
 
 
-    public void preOrder(List<Viewer> list){
-        list.add(this);
-        if (leftViewer != null)
-            leftViewer.preOrder(list);
-        if (rightViewer != null)
-            rightViewer.preOrder(list);
-    }
-
-
     public void inOrder(List<Viewer> list){
         if (leftViewer != null){
             leftViewer.inOrder(list);
