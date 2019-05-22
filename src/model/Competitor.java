@@ -31,8 +31,6 @@ public class Competitor extends Person implements Comparable<Competitor> {
     }
 
 
-
-
     @Override
     public int compareTo(Competitor competitor) {
         if (id.compareTo(competitor.getId()) > 0) {

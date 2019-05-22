@@ -63,6 +63,7 @@ public class Cup {
             return false;
     }
 
+    // Agrega un nuevo espectadores.
     public void addViewer(String id, String firstName, String lastName, String email, String gender, String country, String photo, String birthday) {
         Viewer newViewer = new Viewer(id, firstName, lastName, email, gender, country, photo, birthday);
         boolean added = false;
@@ -91,6 +92,7 @@ public class Cup {
         numberViewers++;
     }
 
+    // Busca un espectador con el id ingresado.
     public Viewer searchViewer(String id) throws EmptyIdException, NotExistViewerException {
          time = 0;
          long start = System.currentTimeMillis();
@@ -117,6 +119,7 @@ public class Cup {
         return current;
     }
 
+    // Agrega un nuevo participante.
     public void addCompetitor(String id, String firstName, String lastName, String email, String gender, String country, String photo, String birthday) {
         Competitor newCompetitor = new Competitor(id, firstName, lastName, email, gender, country, photo, birthday);
         if (firstCompetitor == null) {
@@ -128,13 +131,6 @@ public class Cup {
             lastCompetitor = newCompetitor;
         }
         numberCompetitor++;
-    }
-
-    public List<Viewer> preOrder(){
-        List<Viewer> list = new ArrayList<>();
-        if (rootViewer != null)
-            rootViewer.preOrder(list);
-        return list;
     }
 
 
@@ -188,7 +184,7 @@ public class Cup {
             Viewer current = viewers.get(index);
             addCompetitor(current.getId(), current.getFirstName(), current.getLastName(),
                     current.getEmail(), current.getGender(), current.getCountry(),
-                    current.getPhoto(), current.getBirthday());
+                    current.getPathPhoto(), current.getBirthday());
         }
     }
 
@@ -198,20 +194,33 @@ public class Cup {
         numberCompetitor = 0;
     }
 
-
-    public List<Viewer> printViewers(String country)throws EmptyCountryException{
-        List<Viewer> viewers;
+    public List<Viewer> viewersToPrint(String country)throws EmptyCountryException{
+        List<Viewer> viewers= new ArrayList<>();
         if (country.equals("")){
             throw new EmptyCountryException();
-        }else{
-            viewers = preOrder();
+        }else {
+            for (Viewer current:inOrder()) {
+                if (current.getCountry().compareTo(country) == 0){
+                    viewers.add(current);
+                }
+            }
         }
-
         return viewers;
     }
 
+    public Viewer treeViewersToPrint(List<Viewer> list) {
+        Viewer root = null;
+        for (Viewer current:list) {
+            if(root == null){
+                root = current;
+            }else{
+                root.insert(current);
+            }
+        }
+        return root;
+    }
 
-    public List<Competitor> printCompetitors(String country) throws EmptyCountryException{
+    public List<Competitor> competitorsToPrint(String country) throws EmptyCountryException{
         List<Competitor> competitors = new ArrayList<>();
         if(country.equals("")){
            throw new EmptyCountryException();

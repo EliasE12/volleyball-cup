@@ -1,20 +1,25 @@
 package model;
 
 import customExceptions.NotExistViewerException;
-
 import java.util.Date;
 import java.util.List;
 
+// Clase
 public class Viewer extends Person implements Comparable<Viewer>{
 
+    // Atributos
     private Viewer leftViewer;
     private Viewer rightViewer;
 
+    // Constructor
     public Viewer(String id, String firstName, String lastName, String email, String gender, String country, String photo, String birthday) {
         super(id, firstName, lastName, email, gender, country, photo, birthday);
         leftViewer = null;
         rightViewer = null;
     }
+
+
+    // Métodos
 
 
     public void preOrder(List<Viewer> list){
@@ -36,7 +41,20 @@ public class Viewer extends Person implements Comparable<Viewer>{
         }
     }
 
+    public void insert(Viewer viewer) {
 
+        if (this.id.compareTo(viewer.getId()) > 0) {
+            if (leftViewer == null)
+                leftViewer = viewer;
+            else
+                leftViewer.insert(viewer);
+        } else {
+            if (rightViewer == null)
+                rightViewer = viewer;
+            else
+                rightViewer.insert(viewer);
+        }
+    }
 
     public Viewer getLeftViewer() {
         return leftViewer;

@@ -7,7 +7,15 @@ import static org.junit.jupiter.api.Assertions.*;
 class ViewerTest {
 
     @Test
-    void search() {
+    void preOrder() {
+    }
+
+    @Test
+    void inOrder() {
+    }
+
+    @Test
+    void insert() {
     }
 
     @Test

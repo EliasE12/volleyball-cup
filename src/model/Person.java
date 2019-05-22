@@ -1,7 +1,5 @@
 package model;
 
-import java.util.Date;
-
 public class Person {
 
     protected String id;
@@ -10,17 +8,17 @@ public class Person {
     protected String email;
     protected String gender;
     protected String country;
-    protected String photo;
+    protected String pathPhoto;
     protected String birthday;
 
-    public Person(String id, String firstName, String lastName, String email, String gender, String country, String photo, String birthday) {
+    public Person(String id, String firstName, String lastName, String email, String gender, String country, String pathPhoto, String birthday) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.gender = gender;
         this.country = country;
-        this.photo = photo;
+        this.pathPhoto = pathPhoto;
         this.birthday = birthday;
     }
 
@@ -73,12 +71,12 @@ public class Person {
         this.country = country;
     }
 
-    public String getPhoto() {
-        return photo;
+    public String getPathPhoto() {
+        return pathPhoto;
     }
 
-    public void setPhoto(String photo) {
-        this.photo = photo;
+    public void setPathPhoto(String pathPhoto) {
+        this.pathPhoto = pathPhoto;
     }
 
     public String getBirthday() {
@@ -88,4 +86,16 @@ public class Person {
     public void setBirthday(String birthday) {
         this.birthday = birthday;
     }
+
+    @Override
+    public String toString(){
+        return "Id: " + this.getId() + "\n" +
+                       "Nombre: " + this.getFirstName() + "\n" +
+                       "Apellido: " + this.getLastName() + "\n" +
+                       "Email: " + this.getEmail() + "\n" +
+                       "Género: " + this.getGender() + "\n" +
+                       "País: " + this.getCountry() + "\n" +
+                       "Cumpleaños: " + this.getBirthday() + "\n";
+    }
+
 }

@@ -6,11 +6,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class CupVolleyballMain extends Application {
+public class VolleyballCupMain extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("CupVolleyballGUI.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("VolleyballCupGUI.fxml"));
         primaryStage.setTitle("IV Copa Panamericana de Voleibol Masculino Sub-21");
         Scene scene = new Scene(root);
 

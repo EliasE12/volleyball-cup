@@ -9,27 +9,19 @@ import customExceptions.NotExistViewerException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.HPos;
-import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.Separator;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
-import javafx.scene.shape.HLineTo;
 import javafx.scene.shape.Line;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import model.Competitor;
 import model.Cup;
 import model.Viewer;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -38,7 +30,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 // Clase
-public class CupVolleyballController implements Initializable {
+public class VolleyballCupController implements Initializable {
 
     // Atributos
     @FXML private JFXTextField tfPathFile;
@@ -59,12 +51,10 @@ public class CupVolleyballController implements Initializable {
     @FXML private Label lbGender;
     @FXML private Label lbCountry;
     @FXML private Label lbBirthday;
-    @FXML private JFXButton btViewers;
-    @FXML private JFXButton btCompetitors;
     @FXML private JFXTextField tfCountry;
     @FXML private Label lbTimeLoadInfo;
     @FXML private ImageView ivBanner;
-    @FXML private ScrollPane spPrintStructure;
+    @FXML private Pane pPrintStructure;
     @FXML private Label lbInfoStructure;
 
     private Cup cup;
@@ -92,7 +82,7 @@ public class CupVolleyballController implements Initializable {
 
         try {
             FileChooser chooser = new FileChooser();
-            chooser.setInitialDirectory(new File("C:\\Users\\elias\\IdeaProjects\\volleyball-cup\\resourses\\data"));
+            chooser.setInitialDirectory(new File(".\\resourses\\data"));
             dataFile = chooser.showOpenDialog(new Stage());
             tfPathFile.setText(dataFile.getAbsolutePath());
             lbInfoFile.setText("Se encontró la lista de espectadores.");
@@ -132,7 +122,7 @@ public class CupVolleyballController implements Initializable {
         Viewer searched;
         try {
             searched = cup.searchViewer(tfViewerId.getText());
-            ivPhoto.setImage(new Image(searched.getPhoto()));
+            ivPhoto.setImage(new Image(searched.getPathPhoto()));
             lbId.setText(searched.getId());
             lbFirstName.setText(searched.getFirstName());
             lbLastName.setText(searched.getLastName());
@@ -140,7 +130,7 @@ public class CupVolleyballController implements Initializable {
             lbGender.setText(searched.getGender());
             lbCountry.setText(searched.getCountry());
             lbBirthday.setText(searched.getBirthday());
-            lbTimeViewer.setText(String.valueOf(cup.getTime())+" ms");
+            lbTimeViewer.setText(cup.getTime()+" ms");
         }catch (EmptyIdException e){
             lbInfoViewer.setText("No ha ingresado el id del espectador.");
         }catch (NotExistViewerException e){
@@ -156,7 +146,7 @@ public class CupVolleyballController implements Initializable {
         Competitor searched;
         try {
             searched = cup.searchCompetitor(tfCompetitorId.getText());
-            ivPhoto.setImage(new Image(searched.getPhoto()));
+            ivPhoto.setImage(new Image(searched.getPathPhoto()));
             lbId.setText(searched.getId());
             lbFirstName.setText(searched.getFirstName());
             lbLastName.setText(searched.getLastName());
@@ -164,7 +154,7 @@ public class CupVolleyballController implements Initializable {
             lbGender.setText(searched.getGender());
             lbCountry.setText(searched.getCountry());
             lbBirthday.setText(searched.getBirthday());
-            lbTimeCompetitor.setText(String.valueOf(cup.getTime())+" ms");
+            lbTimeCompetitor.setText(cup.getTime()+" ms");
         } catch (EmptyIdException e) {
             lbInfoCompetitor.setText("No ha ingresado el id del particpante.");
         } catch (NotExistCompetitorException e) {
@@ -172,66 +162,104 @@ public class CupVolleyballController implements Initializable {
         }
     }
 
+
+
+    public void drawTreeViewers(BorderPane borderPane, ImageView imageView, TextArea textArea, Viewer viewer) {
+
+        imageView.setImage(new Image(viewer.getPathPhoto()));
+
+        textArea.setText(viewer.toString());
+
+        borderPane.setTop(imageView);
+        borderPane.setBottom(textArea);
+        borderPane.setStyle("-fx-background-color:  #1e90ff");
+        borderPane.setLayoutX(0);
+        borderPane.setLayoutY(0);
+
+        pPrintStructure.getChildren().addAll(borderPane);
+
+    }
     // Pinta la estructura del árbol binario da búsqueda de espectadores.
     @FXML
     public void controlViewers(ActionEvent event){
 
+        BorderPane borderPane = new BorderPane();
+        borderPane.setPrefSize(200,155);
+
+        ImageView imageView = new ImageView();
+        imageView.setFitWidth(80);
+        imageView.setFitHeight(80);
+
+        TextArea textArea = new TextArea();
+        textArea.setPrefSize(200,155);
+
+        try {
+
+            Viewer root = cup.treeViewersToPrint(cup.viewersToPrint(tfCountry.getText()));
+            if (root != null) {
+                while (root != null) {
+                    drawTreeViewers(borderPane, imageView, textArea, root);
+                    if (root.getLeftViewer() != null) {
+                        drawTreeViewers(borderPane, imageView, textArea, root.getLeftViewer());
+                        root = root.getLeftViewer();
+                    }
+                    if (root.getRightViewer() != null) {
+                        drawTreeViewers(borderPane, imageView, textArea, root.getRightViewer());
+                        root = root.getRightViewer();
+                    }
+                }
+            }
+        }catch (EmptyCountryException e){
+            e.printStackTrace();
+        }
     }
+
 
     // Pinta la estructura de la lista doblemente enlazada de participantes.
     @FXML
     public void controlCompetitors(ActionEvent event){
         try {
-            List<Competitor> competitorList = cup.printCompetitors(tfCountry.getText());
+            List<Competitor> competitorList = cup.competitorsToPrint(tfCountry.getText());
 
-            HBox hBox = new HBox();
-            spPrintStructure.setContent(hBox);
-            spPrintStructure.setPannable(true);
             int desplace = 0;
-
+            int counter = 0;
             for (Competitor competitor: competitorList) {
 
-                ImageView imageView = new ImageView(new Image(competitor.getPhoto()));
-                imageView.setFitHeight(80.0);
-                imageView.setFitWidth(80.0);
-                imageView.setLayoutX(200.0);
-                imageView.setLayoutY(8.0);
+                BorderPane borderPane = new BorderPane();
+                borderPane.setPrefSize(200.0, 155.0);
+                borderPane.setLayoutX(desplace);
+                borderPane.setLayoutY(20.0);
+
+                ImageView imageView = new ImageView(new Image(competitor.getPathPhoto()));
+                imageView.setFitHeight(80);
+                imageView.setFitWidth(90);
 
                 TextArea textArea = new TextArea();
-                textArea.setText("Id: "+ competitor.getId()+"\n"+
-                                         "Nombre: "+ competitor.getFirstName()+"\n"+
-                                         "Apellido: "+ competitor.getLastName()+"\n"+
-                                         "Email: "+ competitor.getEmail()+"\n"+
-                                         "Género: "+ competitor.getGender()+"\n"+
-                                         "País: "+ competitor.getCountry()+"\n"+
-                                         "Cumpleaños: "+ competitor.getBirthday()+"\n"
+                textArea.setText(competitor.toString());
+                textArea.setPrefSize(200.0, 155.0);
 
-                );
-                textArea.setPrefSize(200.0,155.0);
-
-                BorderPane borderPane = new BorderPane();
-                borderPane.setPrefSize(200.0,155.0);
-                borderPane.setLayoutX(200.0 + desplace);
-                borderPane.setLayoutY(20.0);
                 borderPane.setTop(imageView);
                 borderPane.setBottom(textArea);
                 borderPane.setStyle("-fx-background-color:  #1e90ff");
 
-                Separator separator = new Separator();
-                separator.setPrefSize(190,3);
-                separator.setLayoutY(200);
+                pPrintStructure.getChildren().addAll(borderPane);
 
-                separator.setHalignment(HPos.CENTER);
-                separator.setStyle("-fx-background-color: Black");
+                if (counter != competitorList.size() - 1) {
 
-                Line line1 = new Line(70,90,50,90);
-                Line line2 = new Line(25,120,50,120);
+                    Line line1 = new Line(borderPane.getLayoutX() + 200, borderPane.getLayoutY() + 100, borderPane.getLayoutX() + 200 + 190, borderPane.getLayoutY() + 100);
+                    Line line2 = new Line(borderPane.getLayoutX() + 200, borderPane.getLayoutY() + 150, borderPane.getLayoutX() + 200 + 190, borderPane.getLayoutY() + 150);
 
-                hBox.getChildren().addAll(borderPane,line2);
+                    Line f1 = new Line(line1.getStartX() + 100, line1.getStartY(), line1.getStartX() + 90, line1.getStartY() - 10);
+                    Line f2 = new Line(line1.getStartX() + 100, line1.getStartY(), line1.getStartX() + 90, line1.getStartY() + 10);
 
+                    Line f3 = new Line(line2.getStartX(), line2.getStartY(), line2.getStartX() + 10, line2.getStartY() - 10);
+                    Line f4 = new Line(line2.getStartX(), line2.getStartY(), line2.getStartX() + 10, line2.getStartY() + 10);
+
+                    pPrintStructure.getChildren().addAll(line1, line2, f1, f2, f3, f4);
+                }
+                counter++;
                 desplace += 300;
             }
-
         }catch (EmptyCountryException e){
             lbInfoStructure.setText("No ha ingresado el nombre de un país.");
         }
