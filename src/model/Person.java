@@ -11,6 +11,8 @@ public class Person {
     protected String pathPhoto;
     protected String birthday;
 
+    public Person(){}
+
     public Person(String id, String firstName, String lastName, String email, String gender, String country, String pathPhoto, String birthday) {
         this.id = id;
         this.firstName = firstName;

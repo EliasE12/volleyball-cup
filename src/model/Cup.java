@@ -30,7 +30,7 @@ public class Cup {
     // Métodos
 
     // Carga los datos de los espectadores.
-    public void loadInfo(File file) throws FileNotFoundException, IOException {
+    public void loadInfo(File file) throws IOException {
         long start = System.currentTimeMillis();
         String id, fN, lN, email, gd, country, photo, birthday;
         String linea;
