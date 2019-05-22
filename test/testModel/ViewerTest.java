@@ -13,7 +13,6 @@ class ViewerTest {
 
         viewer = new Viewer("33-6606868","Vina","Wearne","vwearneh@istockphoto.com","Female","Indonesia","https://robohash.org/aspernaturetfugiat.png?size=170x170&set=set1","9/25/2010");
 
-
     }
 
     @Test
